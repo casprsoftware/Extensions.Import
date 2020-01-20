@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>CASPR.Extensions.Import</AssemblyName>
+    <RootNamespace>CASPR.Extensions.Import</RootNamespace>
+    <Authors>CASPR Software</Authors>
+    <Description>Import Framework. Interfaces and base (null) implementations.</Description>
+    <Version>1.0.0-beta1</Version>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>import data, sql</PackageTags>
+    <RepositoryUrl>https://github.com/casprsoftware/Extensions.Import</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Copyright>© CASPR Software. All rights reserved.</Copyright>
+  </PropertyGroup>
+
+</Project>
