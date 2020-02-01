@@ -7,30 +7,20 @@ namespace CASPR.Extensions.Import.Services
     public class DIImportWorkerFactory : IImportWorkerFactory
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IImportTypeStorage _importTypeStorage;
 
-        public DIImportWorkerFactory(
-            IServiceProvider serviceProvider, 
-            IImportTypeStorage importTypeStorage)
+        public DIImportWorkerFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _importTypeStorage = importTypeStorage;
         }
 
-        public IImportWorker Create(string importTypeName)
+        public IImportWorker Create(Type workerType)
         {
-            if (string.IsNullOrEmpty(importTypeName))
+            if (workerType == null)
             {
-                throw new ArgumentException("Value cannot be null or empty.", nameof(importTypeName));
+                throw new ArgumentNullException(nameof(workerType));
             }
 
-            var importType = _importTypeStorage.GetImportType(importTypeName);
-            if (importType == null)
-            {
-                throw new ArgumentException($"Import type with name '{importTypeName}' does not exist.");
-            }
-
-            return (IImportWorker) _serviceProvider.GetRequiredService(importType.WorkerType);
+            return (IImportWorker) _serviceProvider.GetRequiredService(workerType);
         }
     }
 }

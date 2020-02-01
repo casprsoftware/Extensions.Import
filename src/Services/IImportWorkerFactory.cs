@@ -1,7 +1,9 @@
-﻿namespace CASPR.Extensions.Import.Services
+﻿using System;
+
+namespace CASPR.Extensions.Import.Services
 {
     public interface IImportWorkerFactory
     {
-        IImportWorker Create(string importTypeName);
+        IImportWorker Create(Type workerType);
     }
 }

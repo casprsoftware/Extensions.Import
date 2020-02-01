@@ -1,47 +1,26 @@
 ﻿using System.Threading;
-using CASPR.Extensions.Import.Services;
 
 namespace CASPR.Extensions.Import
 {
     public class ImportBackgroundService
     {
-        private readonly IImportWorkerFactory _importWorkerFactory;
-        private readonly IImportProfileStorage _importProfileStorage;
-        private readonly IImportTypeStorage _importTypeStorage;
+        private readonly IImportBatchExecutor _batchExecutor;
 
-        public ImportBackgroundService(
-            IImportWorkerFactory importWorkerFactory, 
-            IImportProfileStorage importProfileStorage, 
-            IImportTypeStorage importTypeStorage)
+        public ImportBackgroundService(IImportBatchExecutor batchExecutor)
         {
-            _importWorkerFactory = importWorkerFactory;
-            _importProfileStorage = importProfileStorage;
-            _importTypeStorage = importTypeStorage;
+            _batchExecutor = batchExecutor;
         }
 
         public void Start()
         {
             var batch = new ImportBatch
             {
-                ImportProfileName = "TestProfile", 
+                ImportProfileName = "TestProfile",
                 FileName = "some/file.csv"
-            };
-            // get profile
-            var profile = _importProfileStorage.GetImportProfile(batch.ImportProfileName);
-            
-            // create ImportWorker
-            var importWorker = _importWorkerFactory.Create(profile.ImportTypeName);
-            var importType = _importTypeStorage.GetImportType(profile.ImportTypeName);
-
-            var context = new ImportWorkerContext
-            {
-                Batch = batch,
-                Profile = profile,
-                ImportType = importType
             };
 
             // run worker
-            var importTask = importWorker.RunAsync(context, CancellationToken.None);
+            var importTask = _batchExecutor.RunAsync(batch, CancellationToken.None);
             importTask.ContinueWith((task) =>
             {
                 if (task.IsFaulted)
