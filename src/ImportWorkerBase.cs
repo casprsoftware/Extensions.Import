@@ -62,11 +62,11 @@ namespace CASPR.Extensions.Import
 
         private ICollection<string> ParseLine(string line, ImportProfile importProfile)
         {
-            var columns = line.Split(new[] {importProfile.FieldDelimiter});
+            var columns = line.Split(importProfile.FieldDelimiter);
             if (importProfile.TextQualifier != 0)
             {
                 return columns
-                    .Select(col => col.Trim(new []{ importProfile.TextQualifier }))
+                    .Select(col => col.Trim(importProfile.TextQualifier))
                     .ToList();
             }
 
